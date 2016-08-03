@@ -28,35 +28,32 @@ from openerp import models, api, fields
 class PaymentTransaction(models.Model):
     _inherit = 'payment.transaction'
 
-    payment_id = fields.Many2one(comodel_name='account.payment', string='Payment')
+    payment_ids = fields.One2many(comodel_name='account.payment', inverse_name='transaction_id', string='Payments')
 
     @api.multi
     def write(self, vals):
         result = super(PaymentTransaction, self).write(vals)
-        if not self.env.context.get('no_create_account', False):
-            for transaction in self:
-                if not transaction.payment_id\
-                   and transaction.state == 'done'\
-                   and transaction.acquirer_id.payment_mode == 'auto':
-                    transaction.create_account_payment()
+        for transaction in self:
+            if transaction.state == 'done'\
+               and transaction.acquirer_id.payment_mode == 'auto':
+                transaction.create_account_payment()
         return result
 
     @api.multi
     def create_account_payment(self):
-        for transaction in self:
-            account_payment = self.env['account.payment'].create({
-                'payment_date': fields.Date.context_today(self),
-                'payment_type': 'inbound',
-                'amount': transaction.amount,
-                'currency_id': transaction.currency_id.id,
-                'journal_id': transaction.acquirer_id.journal_id.id,
-                'partner_type': 'customer',
-                'partner_id': transaction.partner_id.id,
-                'payment_reference': transaction.reference,
-                'payment_method_id': self.env.ref('account.account_payment_method_manual_in').id,
-            })
-            account_payment.post()
-            transaction.with_context(no_create_account=True).write({'payment_id': account_payment.id})
+        self.ensure_one()
+        self.env['account.payment'].create({
+            'payment_date': fields.Date.context_today(self),
+            'payment_type': 'inbound',
+            'amount': self.amount,
+            'currency_id': self.currency_id.id,
+            'journal_id': self.acquirer_id.journal_id.id,
+            'partner_type': 'customer',
+            'partner_id': self.partner_id.id,
+            'payment_reference': self.reference,
+            'payment_method_id': self.env.ref('account.account_payment_method_manual_in').id,
+            'transaction_id': self.id,
+        }).post()
         return True
 
 

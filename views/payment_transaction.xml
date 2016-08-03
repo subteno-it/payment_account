@@ -31,7 +31,7 @@
             <field name="priority" eval="80"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='reference']" position="after">
-                    <field name="payment_id" readonly="1"/>
+                    <field name="payment_ids" widget="many2many_tags" readonly="1"/>
                 </xpath>
             </field>
         </record>

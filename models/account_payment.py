@@ -22,9 +22,13 @@
 #
 ##############################################################################
 
-import payment_acquirer
-import account_payment
-import payment_transaction
+from openerp import models, fields
+
+
+class AccountPayment(models.Model):
+    _inherit = 'account.payment'
+
+    transaction_id = fields.Many2one(comodel_name='payment.transaction', string='Payment Transaction')
 
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
