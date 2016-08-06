@@ -22,13 +22,29 @@
 #
 ##############################################################################
 
-from openerp import models, fields
+from openerp import models, fields, api
 
 
 class AccountPayment(models.Model):
     _inherit = 'account.payment'
 
     transaction_id = fields.Many2one(comodel_name='payment.transaction', string='Payment Transaction')
+
+    @api.onchange('transaction_id')
+    def _onchange_transaction_id(self):
+        if self.transaction_id:
+            transaction = self.transaction_id
+            self.partner_id = transaction.partner_id
+            self.amount = transaction.amount
+            self.currency_id = transaction.currency_id
+            self.journal_id = transaction.acquirer_id.journal_id
+            self.communication = transaction.acquirer_reference or transaction.reference
+
+    @api.multi
+    def validate_payment(self):
+        self.transaction_id.state = 'done'
+        self.post()
+        return True
 
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

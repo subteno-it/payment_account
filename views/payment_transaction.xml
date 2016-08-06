@@ -33,6 +33,9 @@
                 <xpath expr="//field[@name='reference']" position="after">
                     <field name="payment_ids" widget="many2many_tags" readonly="1"/>
                 </xpath>
+                <xpath expr="//field[@name='state']" position="before">
+                    <button name="%(action_transaction_account_payment)d" type="action" states="pending" string="Register Payment" groups="account.group_account_invoice" class="oe_highlight"/>
+                </xpath>
             </field>
         </record>
 

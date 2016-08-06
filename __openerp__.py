@@ -37,6 +37,7 @@ Allows to create account payment from payment transaction.
         'payment',
     ],
     'data': [
+        'views/account_payment.xml',
         'views/payment_acquirer.xml',
         'views/payment_transaction.xml',
     ],

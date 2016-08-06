@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 9.0e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-03 09:45+0000\n"
-"PO-Revision-Date: 2016-08-03 09:45+0000\n"
+"POT-Creation-Date: 2016-08-06 15:18+0000\n"
+"PO-Revision-Date: 2016-08-06 15:18+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -26,14 +26,14 @@ msgid "Bank"
 msgstr "Banque"
 
 #. module: payment_account
+#: model:ir.ui.view,arch_db:payment_account.view_account_payment_transaction_form
+msgid "Cancel"
+msgstr "Annuler"
+
+#. module: payment_account
 #: selection:payment.acquirer,payment_mode:0
 msgid "Manual"
 msgstr "Manuel"
-
-#. module: payment_account
-#: model:ir.model.fields,field_description:payment_account.field_payment_transaction_payment_id
-msgid "Payment"
-msgstr "Paiement"
 
 #. module: payment_account
 #: model:ir.model,name:payment_account.model_payment_acquirer
@@ -47,6 +47,30 @@ msgstr "Mode de paiement"
 
 #. module: payment_account
 #: model:ir.model,name:payment_account.model_payment_transaction
+#: model:ir.model.fields,field_description:payment_account.field_account_payment_transaction_id
 msgid "Payment Transaction"
 msgstr "Transaction"
+
+#. module: payment_account
+#: model:ir.model,name:payment_account.model_account_payment
+#: model:ir.model.fields,field_description:payment_account.field_payment_transaction_payment_ids
+msgid "Payments"
+msgstr "Paiements"
+
+#. module: payment_account
+#: model:ir.ui.view,arch_db:payment_account.view_account_payment_transaction_form
+msgid "Post Difference In"
+msgstr "Post Difference In"
+
+#. module: payment_account
+#: model:ir.actions.act_window,name:payment_account.action_transaction_account_payment
+#: model:ir.ui.view,arch_db:payment_account.view_account_payment_transaction_form
+#: model:ir.ui.view,arch_db:payment_account.view_payment_transaction_form
+msgid "Register Payment"
+msgstr "Enregistrer un paiement"
+
+#. module: payment_account
+#: model:ir.ui.view,arch_db:payment_account.view_account_payment_transaction_form
+msgid "Validate"
+msgstr "Valider"
 
