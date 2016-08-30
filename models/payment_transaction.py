@@ -29,6 +29,12 @@ class PaymentTransaction(models.Model):
     _inherit = 'payment.transaction'
 
     payment_ids = fields.One2many(comodel_name='account.payment', inverse_name='transaction_id', string='Payments')
+    payment_count = fields.Integer(string='Payment Count', help='Number of payment', compute='_compute_payment')
+
+    @api.multi
+    def _compute_payment(self):
+        for transaction in self:
+            transaction.payment_count = len(transaction.payment_ids)
 
     @api.multi
     def write(self, vals):

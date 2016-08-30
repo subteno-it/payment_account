@@ -70,6 +70,28 @@
             </field>
         </record>
 
+        <record id="view_account_payment_tree" model="ir.ui.view">
+            <field name="name">account.payment.tree</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_type']" position="after">
+                    <field name="transaction_id" invisible="1"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_account_payment_search" model="ir.ui.view">
+            <field name="name">account.payment.search</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_search"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <field name="transaction_id"/>
+                </xpath>
+            </field>
+        </record>
+
         <record id="action_transaction_account_payment" model="ir.actions.act_window">
             <field name="name">Register Payment</field>
             <field name="res_model">account.payment</field>
