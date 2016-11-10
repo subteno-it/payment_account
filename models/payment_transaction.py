@@ -40,7 +40,8 @@ class PaymentTransaction(models.Model):
     def write(self, vals):
         result = super(PaymentTransaction, self).write(vals)
         for transaction in self:
-            if transaction.state == 'done'\
+            if not transaction.payment_ids\
+               and transaction.state == 'done'\
                and transaction.acquirer_id.payment_mode == 'auto':
                 transaction.create_account_payment()
         return result
