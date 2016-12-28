@@ -52,7 +52,7 @@ class PaymentTransaction(models.Model):
         self.env['account.payment'].create({
             'payment_date': fields.Date.context_today(self),
             'payment_type': 'inbound',
-            'amount': self.amount,
+            'amount': self.amount - self.fees,
             'currency_id': self.currency_id.id,
             'journal_id': self.acquirer_id.journal_id.id,
             'partner_type': 'customer',
@@ -61,6 +61,8 @@ class PaymentTransaction(models.Model):
             'payment_method_id': self.env.ref('account.account_payment_method_manual_in').id,
             'transaction_id': self.id,
             'communication': self.acquirer_reference or self.reference,
+            'payment_difference_handling': 'reconcile',
+            'writeoff_account_id': self.acquirer_id.writeoff_account_id.id,
         }).post()
         return True
 

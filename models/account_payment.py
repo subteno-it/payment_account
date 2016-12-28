@@ -46,5 +46,13 @@ class AccountPayment(models.Model):
         self.post()
         return True
 
+    @api.one
+    @api.depends('transaction_id', 'invoice_ids', 'amount', 'payment_date', 'currency_id')
+    def _compute_payment_difference(self):
+        if self.transaction_id:
+            self.update({'payment_difference': self.transaction_id.amount - self.amount})
+        else:
+            return super(AccountPayment, self)._compute_payment_difference()
+
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
