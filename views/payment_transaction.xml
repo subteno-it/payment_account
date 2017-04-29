@@ -1,58 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Copyright 2016 SYLEAM Info Services
+    License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+-->
 <odoo>
-    <data>
-        ##############################################################################
-        #
-        #    payment_account module for OpenERP, Allows to create account payment from payment transaction
-        #    Copyright (C) 2016 SYLEAM Info Services ([http://www.syleam.fr])
-        #              Sebastien LANGE [sebastien.lange@syleam.fr]
-        #
-        #    This file is a part of payment_account
-        #
-        #    payment_account is free software: you can redistribute it and/or modify
-        #    it under the terms of the GNU Affero General Public License as published by
-        #    the Free Software Foundation, either version 3 of the License, or
-        #    (at your option) any later version.
-        #
-        #    payment_account is distributed in the hope that it will be useful,
-        #    but WITHOUT ANY WARRANTY; without even the implied warranty of
-        #    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-        #    GNU Affero General Public License for more details.
-        #
-        #    You should have received a copy of the GNU Affero General Public License
-        #    along with this program.  If not, see [http://www.gnu.org/licenses/].
-        #
-        ##############################################################################
-
-        <record id="view_payment_transaction_form" model="ir.ui.view">
-            <field name="name">payment.transaction.form</field>
-            <field name="model">payment.transaction</field>
-            <field name="inherit_id" ref="payment.transaction_form"/>
-            <field name="priority" eval="80"/>
-            <field name="arch" type="xml">
-                <xpath expr="//field[@name='state']" position="before">
-                    <button name="%(action_transaction_account_payment)d" type="action" states="pending" string="Register Payment" groups="account.group_account_invoice" class="oe_highlight"/>
-                </xpath>
-                <xpath expr="//field[@name='reference']/../.." position="before">
-                    <div class="oe_button_box" name="button_box">
-                        <button type="action"
-                            class="oe_stat_button"
-                            id="payments"
-                            icon="fa-money"
-                            name="%(account.action_account_payments)d"
-                            attrs="{'invisible': [('payment_count', '=', 0)]}"
-                            context="{'search_default_transaction_id': active_id, 'default_transaction_id': active_id}">
-                            <div class="o_form_field o_stat_info">
-                                <span class="o_stat_value">
-                                    <field name="payment_count"/>
-                                    <span class="o_stat_text"> Payment(s)</span>
-                                </span>
-                            </div>
-                        </button>
-                    </div>
-                </xpath>
-            </field>
-        </record>
-
-    </data>
+    <record id="view_payment_transaction_form" model="ir.ui.view">
+        <field name="name">payment.transaction.form</field>
+        <field name="model">payment.transaction</field>
+        <field name="inherit_id" ref="payment.transaction_form"/>
+        <field name="priority" eval="80"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='state']" position="before">
+                <button name="%(action_transaction_account_payment)d" type="action" states="pending" string="Register Payment" groups="account.group_account_invoice" class="oe_highlight"/>
+            </xpath>
+            <xpath expr="//field[@name='reference']/../.." position="before">
+                <div class="oe_button_box" name="button_box">
+                    <button type="action"
+                        class="oe_stat_button"
+                        id="payments"
+                        icon="fa-money"
+                        name="%(account.action_account_payments)d"
+                        attrs="{'invisible': [('payment_count', '=', 0)]}"
+                        context="{'search_default_transaction_id': active_id, 'default_transaction_id': active_id}">
+                        <div class="o_form_field o_stat_info">
+                            <span class="o_stat_value">
+                                <field name="payment_count"/>
+                                <span class="o_stat_text"> Payment(s)</span>
+                            </span>
+                        </div>
+                    </button>
+                </div>
+            </xpath>
+        </field>
+    </record>
 </odoo>
