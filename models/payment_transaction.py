@@ -26,10 +26,10 @@ class PaymentTransaction(models.Model):
                 transaction.create_account_payment()
         return result
 
-    @api.multi
-    def create_account_payment(self):
+    def _prepare_payment_data(self):
         self.ensure_one()
-        self.env['account.payment'].create({
+
+        return {
             'payment_date': fields.Date.context_today(self),
             'payment_type': 'inbound',
             'amount': self.amount - self.fees,
@@ -43,6 +43,11 @@ class PaymentTransaction(models.Model):
             'communication': self.acquirer_reference or self.reference,
             'payment_difference_handling': 'reconcile',
             'writeoff_account_id': self.acquirer_id.writeoff_account_id.id,
-        }).post()
+        }
+
+    @api.multi
+    def create_account_payment(self):
+        self.ensure_one()
+        self.env['account.payment'].create(self._prepare_payment_data()).post()
         return True
 
