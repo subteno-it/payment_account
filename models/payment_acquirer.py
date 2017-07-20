@@ -31,6 +31,7 @@ class PaymentAcquirer(models.Model):
     journal_id = fields.Many2one(comodel_name='account.journal', string='Bank', domain=[('type', '=', 'bank')])
     payment_mode = fields.Selection(selection=[('manual', 'Manual'), ('auto', 'Auto')], default='manual', string='Payment Mode')
     writeoff_account_id = fields.Many2one(comodel_name='account.account', string='Write-Off account')
-
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+    payment_method_id = fields.Many2one(
+        comodel_name='account.payment.method', string='Payment method',
+        required=True, default=lambda self: self.env.ref(
+            'account.account_payment_method_manual_in'))

@@ -32,6 +32,7 @@
                 <xpath expr="//field[@name='auto_confirm']" position="after">
                     <field name="journal_id" options="{'no_create': True, 'no_open':True}" widget="selection"/>
                     <field name="payment_mode"/>
+                    <field name="payment_method_id"/>
                 </xpath>
                 <xpath expr="//field[@name='fees_dom_fixed']" position="before">
                     <field name="writeoff_account_id" attrs="{'invisible': [('fees_active', '=', False)]}"/>
