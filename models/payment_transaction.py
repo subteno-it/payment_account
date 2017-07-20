@@ -38,7 +38,7 @@ class PaymentTransaction(models.Model):
             'partner_type': 'customer',
             'partner_id': self.partner_id.id,
             'payment_reference': self.reference,
-            'payment_method_id': self.env.ref('account.account_payment_method_manual_in').id,
+            'payment_method_id': self.acquirer_id.payment_method_id.id,
             'transaction_id': self.id,
             'communication': self.acquirer_reference or self.reference,
             'payment_difference_handling': 'reconcile',
