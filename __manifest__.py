@@ -7,14 +7,14 @@
     'version': '1.0',
     'category': 'Accounting',
     'description': """
-Allows to create account payment from payment transaction.
+Allows to create account payment from payment transaction instead of create invoice and payment.
     """,
     'author': 'SYLEAM',
     'website': 'http://www.syleam.fr/',
     'depends': [
         'base',
         'account',
-        'payment',
+        'sale_payment',
     ],
     'data': [
         'views/account_payment.xml',

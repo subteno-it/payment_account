@@ -8,23 +8,13 @@ from odoo import models, api, fields
 class PaymentTransaction(models.Model):
     _inherit = 'payment.transaction'
 
-    payment_ids = fields.One2many(comodel_name='account.payment', inverse_name='transaction_id', string='Payments')
+    payment_ids = fields.One2many(comodel_name='account.payment', inverse_name='payment_transaction_id', string='Payments')
     payment_count = fields.Integer(string='Payment Count', help='Number of payment', compute='_compute_payment')
 
     @api.multi
     def _compute_payment(self):
         for transaction in self:
             transaction.payment_count = len(transaction.payment_ids)
-
-    @api.multi
-    def write(self, vals):
-        result = super(PaymentTransaction, self).write(vals)
-        for transaction in self:
-            if not transaction.payment_ids\
-               and transaction.state == 'done'\
-               and transaction.acquirer_id.payment_mode == 'auto':
-                transaction.create_account_payment()
-        return result
 
     def _prepare_payment_data(self):
         self.ensure_one()
@@ -39,15 +29,15 @@ class PaymentTransaction(models.Model):
             'partner_id': self.partner_id.id,
             'payment_reference': self.reference,
             'payment_method_id': self.acquirer_id.payment_method_id.id,
-            'transaction_id': self.id,
+            'payment_transaction_id': self.id,
             'communication': self.acquirer_reference or self.reference,
             'payment_difference_handling': 'reconcile',
             'writeoff_account_id': self.acquirer_id.writeoff_account_id.id,
         }
 
     @api.multi
-    def create_account_payment(self):
-        self.ensure_one()
-        self.env['account.payment'].create(self._prepare_payment_data()).post()
-        return True
-
+    def _generate_and_pay_invoice(self):
+        if self.acquirer_id.payment_method_id:
+            self.env['account.payment'].create(self._prepare_payment_data()).post()
+        else:
+            super(PaymentTransaction, self)._generate_and_pay_invoice()
